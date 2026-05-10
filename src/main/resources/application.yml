@@ -1,0 +1,23 @@
+# 이것들은 다 뭐하는걸까?
+spring:
+  datasource: #어느 DB에 연결할꺼야?
+    url: jdbc:h2:tcp://localhost/~/jpashop #DB주소 기입
+    username: sa #DB 접속 아이디
+    password:
+    driver-class-name: org.h2.Driver #어느 DB인지 알려주는 드라이버
+    # 여러 DB서비스가 많은데, 사용하려는 DB와 연결을 도와주는 통역사인셈.
+
+  jpa:
+    hibernate:
+      # 시작할때 테이블도 생성해주네??
+      ddl-auto: create
+    properties:
+      hibernate:
+#        show_sql: true -> 해당 옵션은 SQL을 콘솔로 보여준다. 이거는 최악의 방식.. 로거를 통해 출력해야한다.
+        format_sql: true # JPA가 생성한 SQL을 자동 생성한걸 보기 좋게 포매팅하는 옵션
+
+
+logging:
+  level:
+    org.hibernate.SQL: debug #실행된 SQL보여준다.
+    org.hibernate.orm.jdbc.bind: trace
