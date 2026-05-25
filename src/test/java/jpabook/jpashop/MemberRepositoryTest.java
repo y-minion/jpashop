@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberRepositoryTest {
 
     @Autowired //해당 리포지토리는 스프링이 넣어줄 수 있도록 오토와이어를 통해 의존성을 주입받는다.
-    MemberRepository memberRepository;
+    MemberRepository_regacy memberRepository;
 
 
     @Test

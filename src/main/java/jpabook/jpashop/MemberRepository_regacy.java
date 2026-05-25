@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 //리포지토리는 엔티티를 찾아주는 애라고 생각.
 @Repository
-public class MemberRepository {
+public class MemberRepository_regacy {
 
     //jpa를 쓰면 엔티티 메니저가 필요하다는데???
     @PersistenceContext //이게 엔티티 매니저를 주입한다는데?? -> 스프링 부트가 다 등록해준다?
