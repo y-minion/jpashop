@@ -33,7 +33,7 @@ public class Item {
         this.stockQuantity += quantity;
     }
 
-    public void removeQuantity(int quantity) {
+    public void removeStock(int quantity) {
         int restStock = this.stockQuantity - quantity;
 
         if (restStock < 0) {

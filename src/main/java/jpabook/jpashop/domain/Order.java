@@ -53,10 +53,50 @@ public class Order {
 
     }
 
+    //    ==생성 메서드== -> 해당 엔티티를 만들때 해당 메서드만 호출하면 바로 만들수 있다.
+    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
+        Order order = new Order();
+        order.setMember(member);
+        order.setDelivery(delivery);
+        for (OrderItem orderItem : orderItems) {
+            order.addOrderItem(orderItem);
+
+        }
+        order.setOrderStatus(OrderStatus.ORDER);
+        order.setOrderDate(LocalDateTime.now());
+        return order;
+    }
+
+    //==비즈니스 로직==//
+//    주문 취소
+    public void cancel() {
+        if (delivery.getStatus() == DeliveryStatus.COMP) {
+            throw new IllegalStateException("이미 배송완료된 상품은 취소가 불가능합니다.");
+
+        }
+        orderStatus = OrderStatus.CANCEL;
+        for (OrderItem orderItem : orderItems) {
+            orderItem.cancel();
+
+        }
 
 
+    }
 
+    //==조회로직==//
 
+    /**
+     * 전체 주문 가격 조회
+     */
+    public int getTotalPrice() {
+        int totalCont = 0;
+        for (OrderItem orderItem : orderItems) {
+            totalCont += orderItem.getTotalPrice();
+
+        }
+
+        return totalCont;
+    }
 
 
 }
