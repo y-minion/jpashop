@@ -29,7 +29,7 @@ public class OrderItem {
     private int count;
 
     //==생성 메서드==//
-    public static OrderItem orderItem(Item item, int orderPrice, int count) {
+    public static OrderItem createOrderItem(Item item, int orderPrice, int count) {
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
         orderItem.setOrderPrice(orderPrice);
@@ -41,7 +41,7 @@ public class OrderItem {
 
     //==비즈니스 로직==//
     public void cancel() {
-        item.addStock(count);
+        getItem().addStock(count);
     }
 
     //==조회 로직==//

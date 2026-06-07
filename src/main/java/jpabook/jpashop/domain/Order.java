@@ -60,6 +60,7 @@ public class Order {
         order.setDelivery(delivery);
         for (OrderItem orderItem : orderItems) {
             order.addOrderItem(orderItem);
+//            실무에서는 order인스턴스를 생성할때 상품의 총합 가격을 계산해서 총액 필드에 기록한다. -> 역정규화
 
         }
         order.setOrderStatus(OrderStatus.ORDER);
