@@ -8,9 +8,12 @@ import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.domain.item.Item;
+import jpabook.jpashop.exception.NotEnoughStockException;
 import jpabook.jpashop.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,11 +50,39 @@ public class OrderServiceTest {
     }
     @Test
     public void 상품주문_재고수량초과() {
-//...
+        //Given
+        Member member = createMember();
+        Item item = createBook("시골 JPA", 10000, 10);
+
+        int orderCount = 11; //재고보다 많은 수량
+
+
+        //When,Then
+        assertThrows(
+                NotEnoughStockException.class,
+                () -> orderService.order(member.getId(), item.getId(), orderCount)
+        );
+
+
     }
     @Test
     public void 주문취소() {
-//...
+        //Given
+        Member member = createMember();
+        Item item = createBook("시골 JPA", 10000, 10);
+        int orderCount = 2;
+
+        Long orderId = orderService.order(member.getId(), item.getId(), orderCount);
+
+        //When
+        orderService.cancelOrder(orderId); //orderService의 cancel 로직을 확인해보면 실제 order 레코드를 삭제하는게 아니라 order의 상태를 cancel로 바꾸고 item 수량을 원복한다.
+
+
+        //Then
+        Order getOrder = orderRepository.findOne(orderId);
+        assertEquals(OrderStatus.CANCEL, getOrder.getOrderStatus(), "주문 취소시 상태는 CANCEL 이다");
+        assertEquals(10, item.getStockQuantity(), "주문이 취소된 상품은 그만큼 재고가 증가해야 한다.");
+
     }
 
     private Item createBook(String name, int price, int stockQuantity) {
