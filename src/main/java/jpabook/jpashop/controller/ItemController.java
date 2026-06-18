@@ -65,19 +65,29 @@ public class ItemController {
         return "items/updateItemForm";
     }
 
-    @PostMapping("items/{itemId}/edit")
-    public String updateItem(@ModelAttribute("form") BookForm form) {
-        //POST로 받은 form의 데이터를 바탕으로 Book객체를 만들어서 저장한다.
-        Book book = new Book();
-        book.setId(form.getId());
-        book.setName(form.getName());
-        book.setPrice(form.getPrice());
-        book.setStockQuantity(form.getStockQuantity());
-        book.setAuthor(form.getAuthor());
-        book.setIsbn(form.getIsbn());
+    /**
+     * @PostMapping("items/{itemId}/edit") public String updateItem(@ModelAttribute("form") BookForm form) {
+     * //POST로 받은 form의 데이터를 바탕으로 Book객체를 만들어서 저장한다.
+     * //여기서 book객체는 새롭게 만들어도 기존의 아이템 id를 넣었기때문에 준영속 엔티티가 된다. 이렇게 되면 컨텍스트에서 관리할 수 없으므로 dirty checking이 안된다. (이 방식은 지양하도록 한다.)
+     * //아래 방식은 merge방식이다.
+     * Book book = new Book();
+     * book.setId(form.getId());
+     * book.setName(form.getName());
+     * book.setPrice(form.getPrice());
+     * book.setStockQuantity(form.getStockQuantity());
+     * book.setAuthor(form.getAuthor());
+     * book.setIsbn(form.getIsbn());
+     * <p>
+     * itemService.saveItem(book);
+     * return "redirect:/items";
+     * }
+     */
 
-        itemService.saveItem(book);
+    @PostMapping("/items/{itemId}/edit")
+    public String updateItem(@PathVariable("itemId") Long itemId,
+                             @ModelAttribute("form") BookForm form
+    ) {
+        itemService.updateItem(itemId, form.getName(), form.getPrice(), form.getPrice());
         return "redirect:/items";
     }
-
 }
